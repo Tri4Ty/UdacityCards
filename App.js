@@ -1,11 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar } from 'react-native';
-import { createBottomTabNavigator } from 'react-navigation'
+import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 import { Constants } from 'expo'
 import { FontAwesome } from '@expo/vector-icons'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
 
-import Decks from './decks/Decks';
-import AddDeck from './decks/AddDeck';
+import reducer from './Reducer'
+import Deck from './components/Deck';
+import Decks from './components/Decks';
+import AddDeck from './components/AddDeck';
+import AddQuestion from './components/AddQuestion';
+import Quiz from './components/Quiz';
 import { black, white } from './utils/colors';
 
 function AppStatusBar ({backgroundColor, ...props}) {
@@ -51,13 +57,45 @@ const Tabs = createBottomTabNavigator({
 	}
 })
 
+const MainNavigator = createStackNavigator({
+	Home: {
+		screen: Tabs,
+		navigationOptions: {
+			header: null
+		}
+	},
+	DeckDetail: {
+		screen: Deck,
+		navigationOptions: ({ navigation }) => ({
+			title: `${navigation.state.params.deckName} Details`,
+			headerTintColor: black
+		})
+	},
+	AddQuestion: {
+		screen: AddQuestion,
+		navigationOptions: ({ navigation }) => ({
+			title: `New Card (${navigation.state.params.deckName})`,
+			headerTintColor: black
+		})
+	},
+	Quiz: {
+		screen: Quiz,
+		navigationOptions: ({ navigation }) => ({
+			title: `${navigation.state.params.deckName} Quiz`,
+			headerTintColor: black
+		})
+	}
+})
+
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-		  <AppStatusBar backgroundColor={black} barStyle="light-content" />
-		  <Tabs />
-	  </View>
+		<Provider store={createStore(reducer)}>
+			<View style={styles.container}>
+		  		<AppStatusBar backgroundColor={black} barStyle="light-content" />
+		  		<MainNavigator />
+	  		</View>
+		</Provider>
     );
   }
 }
