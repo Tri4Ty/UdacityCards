@@ -10,6 +10,7 @@ import {
 import reducer from '../Reducer';
 import Card from './Card';
 import { white, green, black, gray, red } from '../utils/colors';
+import { clearLocalNotification, setLocalNotification } from '../utils/helpers';
 
 let mapStateToProps = (reducer) => {
 	let {
@@ -39,6 +40,12 @@ class Quiz extends Component {
 			correct: newScore,
 			quizComplete: lastCardAnswered
 		});
+
+		if (lastCardAnswered) {
+			// reset the daily reminder to study
+			clearLocalNotification()
+				.then(setLocalNotification())
+		}
 	}
 
 	onReturnHome = () => {

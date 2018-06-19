@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import reducer from '../Reducer';
-import { getAllDecks, mergeDeckData, deleteDeckData } from '../utils/api';
+import { getAllDecks, mergeDeckData } from '../utils/api';
 import { setDecks } from '../Actions';
 import { white, black, gray } from '../utils/colors';
 
@@ -33,10 +33,21 @@ class Decks extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		let { decks } = this.props;
 		if (!prevProps.decks || Object.keys(prevProps.decks).length !== Object.keys(this.props.decks).length) {
 			// a deck was added or removed ... persisted the modified data
 			mergeDeckData('decks', this.props.decks);
 		}
+	}
+
+	onDeckPressed(id, title) {
+		this.props.navigation.navigate(
+			'DeckDetail',
+			{
+				deckId: id,
+				deckName: title
+			}
+		);
 	}
 
 	render() {
@@ -57,7 +68,7 @@ class Decks extends Component {
 							deckId: deckId,
 							deckName: decks[deckId].title
 						}
-					)}
+					) }
 				>
 					<Text style={styles.deckTitle}>{ decks[deckId].title }</Text>
 					<Text style={styles.count}>{ decks[deckId].questions.length } cards</Text>

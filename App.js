@@ -13,6 +13,7 @@ import AddDeck from './components/AddDeck';
 import AddQuestion from './components/AddQuestion';
 import Quiz from './components/Quiz';
 import { black, white } from './utils/colors';
+import { setLocalNotification } from './utils/helpers';
 
 function AppStatusBar ({backgroundColor, ...props}) {
 	return (
@@ -88,20 +89,24 @@ const MainNavigator = createStackNavigator({
 })
 
 export default class App extends React.Component {
-  render() {
-    return (
-		<Provider store={createStore(reducer)}>
-			<View style={styles.container}>
-		  		<AppStatusBar backgroundColor={black} barStyle="light-content" />
-		  		<MainNavigator />
-	  		</View>
-		</Provider>
+	componentDidMount() {
+		setLocalNotification();
+	}
+
+  	render() {
+    	return (
+			<Provider store={createStore(reducer)}>
+				<View style={styles.container}>
+		  			<AppStatusBar backgroundColor={black} barStyle="light-content" />
+		  			<MainNavigator />
+	  			</View>
+			</Provider>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
+  	container: {
+    	flex: 1
+  	},
 });

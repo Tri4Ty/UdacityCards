@@ -19,7 +19,13 @@ class AddDeck extends Component {
 	onPress = (deckName) => {
 		this.props.dispatch(addDeck(deckName));
 		this.setState({ deckName: '' });
-		this.props.navigation.navigate('AllDecks');
+		this.props.navigation.navigate(
+			'DeckDetail',
+			{
+				deckId: deckName.replace(/ /g,''),
+				deckName: deckName
+			}
+		);
 	}
 
 	render() {

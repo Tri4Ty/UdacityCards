@@ -17,7 +17,3 @@ export function mergeDeckData(key, value) {
 			AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(value))
 		})
 }
-
-export function deleteDeckData() {
-	return AsyncStorage.removeItem(STORAGE_KEY);
-}

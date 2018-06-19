@@ -21,6 +21,13 @@ export default class Card extends Component {
 		});
 	}
 
+	componentDidUpdate(prevProps) {
+		if (prevProps.question !== this.props.question) {
+			// question changed ... ensure question is displayed and not answer
+			this.setState({ showAnswer: false });
+		}
+	}
+
 	render() {
 		let { showAnswer } = this.state;
 
