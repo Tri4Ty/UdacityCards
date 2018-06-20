@@ -48,8 +48,14 @@ class Quiz extends Component {
 		}
 	}
 
-	onReturnHome = () => {
-		this.props.navigation.navigate('Home')
+	onDone = (id, name) => {
+		this.props.navigation.navigate(
+			'DeckDetail',
+			{
+				deckId: id,
+				deckName: name
+			}
+		)
 	}
 
 	onRestart = () => {
@@ -74,6 +80,8 @@ class Quiz extends Component {
 			correct,
 			quizComplete
 		} = this.state;
+		let { deckId } = this.props.navigation.state.params;
+		let deck = this.props.decks[deckId];
 
 		let currentQuestion = '';
 		let currentAnswer = '';
@@ -93,7 +101,7 @@ class Quiz extends Component {
 						<View>
 							<Text style={styles.text}>Final Score: { (correct/questions.length)*100 }%</Text>
 							<TouchableOpacity
-								onPress={ () => this.onReturnHome() }
+								onPress={ () => this.onDone(deckId, deck.title) }
 							>
 								<Text style={[styles.link, {color: black}]}>Done</Text>
 							</TouchableOpacity>
